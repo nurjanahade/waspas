@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\KriteriaController;
 use App\Http\Controllers\PenilaianController;
 use App\Http\Controllers\AlternativeController;
+use App\Http\Controllers\AuthController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -15,6 +16,14 @@ use App\Http\Controllers\AlternativeController;
 | contains the "web" middleware group. Now create something great!
 |
 */
+
+Route::get('/login', [AuthController::class, 'tampilanLogin'])->name('login');
+Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
+Route::post('/login/masuk', [AuthController::class, 'Login'])->name('proses_login');
+Route::get('/daftar', [AuthController::class, 'tampilanDaftar']);
+Route::post('/daftar', [AuthController::class, 'daftar']);
+Route::get('forgot-password', [AuthController::class, 'showLinkRequestForm'])->name('password.request');
+Route::post('forgot-password', [AuthController::class, 'sendResetLink'])->name('password.update');
 
 Route::get('/', function () {
     return view('home');

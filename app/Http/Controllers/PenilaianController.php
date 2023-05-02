@@ -169,16 +169,20 @@ class PenilaianController extends Controller
         for ($j = 1; $j <= $alternatifCount; $j++) {
             $data[] =  ${'dataNormal' . $j};
         }
-        // dd($data[0][0]);
-
+        // $test = $kriteria->where('kode_kriteria', 'C' . 1)->first();
+        // dd($test->);
+        // 
         // Mencari Nilai Qi
         for ($j = 1; $j <= $alternatifCount; $j++) {
             for ($i = 1; $i <= $kriteriaCount; $i++) {
                 ${'bobot' .  $i . '_' . $j} = $kriteria->where('kode_kriteria', 'C' . $i)->first();
-                // ${'bobot' .  $i . '_' . $j} = ${'kriteria' .  $i . '_' . $j}->bobot;
+                ${'bobot' .  $i . '_' . $j} = ${'kriteria' .  $i . '_' . $j}->bobot;
+                // dd(${'bobot' .  $i . '_' . $j});
                 ${'timesQ' .  $i . '_' . $j} =  ${'bobot' .  $i . '_' . $j}->bobot * $data[$j - 1][$i - 1];
                 ${'powQ' .  $i . '_' . $j} =  pow($data[$j - 1][$i - 1], ${'bobot' .  $i . '_' . $j}->bobot);
             }
+            // dd(${'bobot' .  5 . '_' . 3});
+
             ${'times2Q' . $j} =  ${'timesQ' . 1 . '_' . $j};
             ${'pow2Q' . $j} =  ${'powQ' . 1 . '_' . $j};
             for ($k = 2; $k <= $kriteriaCount; $k++) {
