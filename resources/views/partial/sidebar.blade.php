@@ -27,7 +27,7 @@
                 <a href="/perhitungan"><span class="fa fa-suitcase mr-3"></span>Perhitangan WASPAS</a>
             </li>
             <li>
-                <a href="#"><span class="fa fa-cogs mr-3"></span>Hasil</a>
+                <a href="/hasil"><span class="fa fa-cogs mr-3"></span>Hasil</a>
             </li>
         </ul>
 

@@ -100,9 +100,9 @@
                                     <select class="form-select w-100  rounded border-primary fw-bold w-75"
                                         id="floatingSelect" aria-label="Floating label select example" id="keterangan"
                                         name="keterangan">
-                                        <option selected>Benefit </option>
-                                        <option value="benefit">Benefit</option>
-                                        <option value="cost">Cost</option>
+                                        <option selected>BENEFIT </option>
+                                        <option value="benefit">BENEFIT</option>
+                                        <option value="cost">COST</option>
                                     </select>
                                 </div>
                             </div>
@@ -165,9 +165,9 @@
                                     <select class="form-select w-100  rounded border-primary fw-bold w-75"
                                         id="floatingSelect" aria-label="Floating label select example"
                                         id="keterangan_edit" name="keterangan">
-                                        <option selected id="optionCore">Benefit </option>
-                                        <option value="benefit">Benefit</option>
-                                        <option value="cost">Cost</option>
+                                        <option selected id="optionCore">BENEFIT </option>
+                                        <option value="benefit">BENEFIT</option>
+                                        <option value="cost">COST</option>
                                     </select>
                                 </div>
                             </div>
