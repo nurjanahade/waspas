@@ -33,9 +33,10 @@
                             </tr>
                         </thead>
                         <tbody>
+                            <?php $no = 1; ?>
                             @foreach ($kriteria as $k)
                                 <tr>
-                                    <td></td>
+                                    <td><?= $no ?></td>
                                     <td>{{ $k->kode_kriteria }}</td>
                                     <td>{{ $k->jenis_kriteria }}</td>
                                     <td>{{ $k->bobot * 100 }}%</td>
@@ -47,6 +48,7 @@
                                     </td>
                                     <meta name="csrf-token" content="{{ csrf_token() }}">
                                 </tr>
+                                <?php $no++; ?>
                             @endforeach
                         </tbody>
                     </table>

@@ -33,16 +33,17 @@
                             <thead class="table-primary">
                                 <tr>
                                     <th scope="col">No</th>
-                                    <th scope="col">Nama Sub Kriteria</th>
+                                    <th scope="col" class="text-center">Nama Sub Kriteria</th>
                                     <th scope="col">Nilai</th>
                                     <th scope="col"> Action</th>
                                 </tr>
                             </thead>
                             <tbody>
+                                <?php $no = 1; ?>
                                 @foreach (${'sub' . ($i + 1)} as $key)
                                     <tr>
-                                        <td scope="col">No</td>
-                                        <td scope="col">{{ $key->keterangan }}</td>
+                                        <td scope="col"><?= $no ?></td>
+                                        <td scope="col" class="text-center">{{ $key->keterangan }}</td>
                                         <td scope="col">{{ $key->nilai }}</td>
                                         <td><button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#edit"
                                                 onclick="edit('{{ $key->id }}')">Edit</button>
@@ -51,6 +52,7 @@
                                         </td>
                                         <meta name="csrf-token" content="{{ csrf_token() }}">
                                     </tr>
+                                    <?php $no++; ?>
                                 @endforeach
                             </tbody>
                         </table>
@@ -115,7 +117,8 @@
     <div class="modal fade" id="edit" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
         aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div class="modal-dialog modal-md  ">
-            <form action="/subKriteria/update/" method="POST" onSubmit="document.getElementById('submit').disabled=true;">
+            <form action="/subKriteria/update/" method="POST"
+                onSubmit="document.getElementById('submit').disabled=true;">
                 @csrf
                 <div class="modal-content">
                     <div class="modal-header">

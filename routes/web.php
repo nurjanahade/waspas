@@ -49,11 +49,13 @@ Route::post('/subKriteria/update', [KriteriaController::class, 'updateSubKriteri
 Route::delete('/subKriteria/{id}', [KriteriaController::class, 'destroySub'])->middleware('auth');
 
 
-Route::get('/penilaian', [PenilaianController::class, 'index']);
-Route::post('/penilaian/tambah', [PenilaianController::class, 'tambahPenilaian']);
-Route::get('/penilaian/edit/{alternatif}', [PenilaianController::class, 'editPenilaian']);
-Route::post('/penilaian/Edit', [PenilaianController::class, 'updatePenilaian']);
+Route::get('/penilaian', [PenilaianController::class, 'index'])->middleware('auth');
+Route::post('/penilaian/tambah', [PenilaianController::class, 'tambahPenilaian'])->middleware('auth');
+Route::get('/penilaian/edit/{alternatif}', [PenilaianController::class, 'editPenilaian'])->middleware('auth');;
+Route::post('/penilaian/Edit', [PenilaianController::class, 'updatePenilaian'])->middleware('auth');
 
-Route::get('/perhitungan', [PenilaianController::class, 'indexPerhitungan']);
+Route::get('/perhitungan', [PenilaianController::class, 'indexPerhitungan'])->middleware('auth');
 
 Route::get('/hasil', [PenilaianController::class, 'hasil']);
+
+Route::get('/print', [PenilaianController::class, 'indexPrint'])->name('print');

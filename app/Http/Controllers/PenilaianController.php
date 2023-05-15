@@ -5,16 +5,22 @@ namespace App\Http\Controllers;
 use App\Models\AlternatifModel;
 use Illuminate\Http\Request;
 use App\Models\KriteriaModel;
+use App\Models\nilaiQiModel;
 use App\Models\PenilaianModel;
 use App\Models\subKriteriaModel;
 use Illuminate\Support\Facades\Redirect;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class PenilaianController extends Controller
 {
     public function index()
     {
         $kriteria = KriteriaModel::all();
-        $alternatif = AlternatifModel::all();
+        $alt = AlternatifModel::all()->sortBy('urutan');
+        foreach ($alt as $key) {
+            $alternatif[] = $key;
+        }
+        // dd($alt);
         $subKriteria = subKriteriaModel::all();
         $penilaian = PenilaianModel::all();
 
@@ -34,12 +40,12 @@ class PenilaianController extends Controller
         }
 
         for ($i = 0; $i < $alternatifCount; $i++) {
-            ${'alternatif' . $i} = $alternatif->get($i);
+            ${'alternatif' . $i} = $alternatif[$i];
             $alternatifJenis[] =  ${'alternatif' . $i}->nama_guru;
         }
 
         for ($i = 0; $i < $alternatifCount; $i++) {
-            ${'alternatif' . $i} = $alternatif->get($i);
+            ${'alternatif' . $i} =  $alternatif[$i];
             $alternatifKode[] =  ${'alternatif' . $i}->kode_alternatif;
         }
 
@@ -117,7 +123,11 @@ class PenilaianController extends Controller
     public function indexPerhitungan()
     {
         $kriteria = KriteriaModel::all();
-        $alternatif = AlternatifModel::all();
+        $alt = AlternatifModel::all()->sortBy('urutan');
+        foreach ($alt as $key) {
+            $alternatif[] = $key;
+        }
+        // $alternatif = (object) $alternatif;
         $subKriteria = subKriteriaModel::all();
         $penilaian = PenilaianModel::all();
 
@@ -125,7 +135,7 @@ class PenilaianController extends Controller
         $kriteriaCount = KriteriaModel::count();
         $alternatifCount = AlternatifModel::count();
 
-        // dd($penilaian->where('kode_kriteria', 'C3')->max('nilai'));
+        // dd($alternatif);
 
         // GET JENIS KRITERIA
         for ($i = 0; $i < $kriteriaCount; $i++) {
@@ -140,13 +150,13 @@ class PenilaianController extends Controller
 
         // GET NAMA GURU
         for ($i = 0; $i < $alternatifCount; $i++) {
-            ${'alternatif' . $i} = $alternatif->get($i);
+            ${'alternatif' . $i} = $alternatif[$i];
             $alternatifJenis[] =  ${'alternatif' . $i}->nama_guru;
         }
 
         // GET KODE GURU
         for ($i = 0; $i < $alternatifCount; $i++) {
-            ${'alternatif' . $i} = $alternatif->get($i);
+            ${'alternatif' . $i} = $alternatif[$i];
             $alternatifKode[] =  ${'alternatif' . $i}->kode_alternatif;
         }
 
@@ -158,7 +168,7 @@ class PenilaianController extends Controller
                 ${'C' . $i . '_' . $j} = $penilaian->where('kode_kriteria', 'C' . $i)->first();
                 ${'x' .  $i . '_' . $j} = $first->where('kode_kriteria', 'C' . $i)->first();
                 if ($seleksi->keterangan == 'BENEFIT') {
-                    ${'dataNormal' . $j}[] = ${'x' .  $i . '_' . $j}->nilai /  ${'C' . $i . '_' . $j}->max('nilai');
+                    ${'dataNormal' . $j}[] = ${'x' .  $i . '_' . $j}->nilai /  $penilaian->where('kode_kriteria', 'C' . $i)->max('nilai');
                     // ${'data' . $j}[] = ${'dataNormal' . $i};
                     // dd(${'C' . $i . '_' . $j}->min('nilai'));
                 } else {
@@ -166,7 +176,7 @@ class PenilaianController extends Controller
                 }
             }
         }
-        dd($C2_1->max('nilai'));
+
         for ($j = 1; $j <= $alternatifCount; $j++) {
             $data[] =  ${'dataNormal' . $j};
             // dd($j);
@@ -197,6 +207,7 @@ class PenilaianController extends Controller
         for ($j = 1; $j <= $alternatifCount; $j++) {
             $dataQi[] =  ${'Q' . $j};
         }
+
 
         return view('perhitungan', [
             'kriteria' => $kriteriaJenis,
@@ -220,6 +231,7 @@ class PenilaianController extends Controller
         foreach ($alt as $key) {
             $alternatif[] = $key;
         }
+        // $alternatif = (object) $alternatif;
         $subKriteria = subKriteriaModel::all();
         $penilaian = PenilaianModel::all();
 
@@ -227,7 +239,7 @@ class PenilaianController extends Controller
         $kriteriaCount = KriteriaModel::count();
         $alternatifCount = AlternatifModel::count();
 
-        // dd(collect($alternatif));
+        // dd($alternatif);
 
         // GET JENIS KRITERIA
         for ($i = 0; $i < $kriteriaCount; $i++) {
@@ -242,13 +254,13 @@ class PenilaianController extends Controller
 
         // GET NAMA GURU
         for ($i = 0; $i < $alternatifCount; $i++) {
-            ${'alternatif' . $i} = collect($alternatif->get($i));
+            ${'alternatif' . $i} = $alternatif[$i];
             $alternatifJenis[] =  ${'alternatif' . $i}->nama_guru;
         }
 
         // GET KODE GURU
         for ($i = 0; $i < $alternatifCount; $i++) {
-            ${'alternatif' . $i} = $alternatif->get($i);
+            ${'alternatif' . $i} = $alternatif[$i];
             $alternatifKode[] =  ${'alternatif' . $i}->kode_alternatif;
         }
 
@@ -260,10 +272,12 @@ class PenilaianController extends Controller
                 ${'C' . $i . '_' . $j} = $penilaian->where('kode_kriteria', 'C' . $i)->first();
                 ${'x' .  $i . '_' . $j} = $first->where('kode_kriteria', 'C' . $i)->first();
                 if ($seleksi->keterangan == 'BENEFIT') {
-                    ${'dataNormal' . $j}[] = ${'x' .  $i . '_' . $j}->nilai /  ${'C' . $i . '_' . $j}->max('nilai');
+
+                    ${'dataNormal' . $j}[] = ${'x' .  $i . '_' . $j}->nilai /  $penilaian->where('kode_kriteria', 'C' . $i)->max('nilai');
                     // ${'data' . $j}[] = ${'dataNormal' . $i};
+                    // dd(${'C' . $i . '_' . $j}->min('nilai'));
                 } else {
-                    ${'dataNormal' . $j}[] = ${'C' . $i . '_' . $j}->max('nilai') / ${'x' .  $i . '_' . $j}->nilai;
+                    ${'dataNormal' . $j}[] = ${'C' . $i . '_' . $j}->min('nilai') / ${'x' .  $i . '_' . $j}->nilai;
                 }
             }
         }
@@ -299,14 +313,42 @@ class PenilaianController extends Controller
             $dataQi[] =  ${'Q' . $j};
         }
 
-        dd($alternatifJenis);
+        // $nilaiqi = nilaiQiModel::first();
+        // dd($nilaiqi);
+        if (nilaiQiModel::first() == null) {
+            for ($j = 1; $j <= $alternatifCount; $j++) {
+                nilaiQiModel::create([
+                    'kode_alternatif' => 'A' . $j,
+                    'nilai_qi' => $dataQi[$j - 1]
+                ]);
+            }
+        } else {
+            for ($j = 1; $j <= $alternatifCount; $j++) {
+                $edit = nilaiQiModel::where('kode_alternatif', 'A' . $j);
+                // dd($edit);
+                $edit->update([
+                    'kode_alternatif' => 'A' . $j,
+                    'nilai_qi' => $dataQi[$j - 1]
+                ]);
+            }
+            // dd($edit);
+        }
+
+        $qi = nilaiQiModel::all()->sortByDesc('nilai_qi');
+        // foreach ($qi as $key) {
+        //     $nilaiqi[] = $key;
+        // // }
+        // $test = $qi->first();
+        // dd($test->alternatif);
+
+
         return view('hasil', [
             'kriteria' => $kriteriaJenis,
             'kriteriaCount' => $kriteriaCount,
             'kriteriaKode' => $kriteriaKode,
             'penilaian' => $penilaian,
-            'data' => $data,
-            'dataQi' => $dataQi,
+
+            'NilaiQi' => $qi,
 
 
             'alternatif' => $alternatifJenis,
@@ -314,5 +356,13 @@ class PenilaianController extends Controller
             'alternatifKode' => $alternatifKode,
             'subKriteria' => $subKriteria
         ]);
+    }
+    public function indexPrint()
+    {
+        $qi = nilaiQiModel::all()->sortByDesc('nilai_qi');
+
+        $pdf = Pdf::loadView('print',  ['NilaiQi' => $qi]);
+        return $pdf->download('print.pdf');
+        // return view('print', ['NilaiQi' => $qi,]);
     }
 }
