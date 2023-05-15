@@ -17,6 +17,14 @@ class KriteriaController extends Controller
         ]);
     }
 
+    public function home()
+    {
+
+        // dd($data);
+        return view('home');
+    }
+
+
     public function tambahKriteria(Request $request)
     {
         $x =  $request->kode_kriteria;

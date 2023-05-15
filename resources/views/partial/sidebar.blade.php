@@ -24,10 +24,10 @@
                 <a href="/penilaian"><span class="fa fa-sticky-note mr-3"></span>Penilaian</a>
             </li>
             <li>
-                <a href="/perhitungan"><span class="fa fa-suitcase mr-3"></span>Perhitangan WASPAS</a>
+                <a href="/perhitungan"><span class="fa fa-suitcase mr-3"></span>Perhitungan WASPAS</a>
             </li>
             <li>
-                <a href="#"><span class="fa fa-cogs mr-3"></span>Hasil</a>
+                <a href="/hasil"><span class="fa fa-cogs mr-3"></span>Hasil</a>
             </li>
         </ul>
 

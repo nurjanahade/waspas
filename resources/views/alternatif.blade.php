@@ -31,9 +31,10 @@
                             </tr>
                         </thead>
                         <tbody>
+                            <?php $no = 1; ?>
                             @foreach ($alternatif as $a)
                                 <tr>
-                                    <th scope="row">1</th>
+                                    <th scope="row"><?= $no ?></th>
                                     <td>{{ $a->kode_alternatif }}</td>
                                     <td>{{ $a->nama_guru }}</td>
                                     <td><button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#edit"
@@ -43,6 +44,7 @@
                                     </td>
                                     <meta name="csrf-token" content="{{ csrf_token() }}">
                                 </tr>
+                                <?php $no++; ?>
                             @endforeach
 
                         </tbody>

@@ -33,25 +33,21 @@ class AuthController extends Controller
         // }
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
-            if (Auth::check() && User::where('id', Auth::id())->first()->isAdmin()) {
-                //jika admin
-                return redirect()->intended('/gejala');
-            } else
-                //jika user
-                return redirect()->intended('/');
+            //jika user
+            return redirect()->intended('/');
+        } else {
+            return back()->withErrors([
+                'email' => 'Email tidak sesuai',
+                'password' => 'password tidak sesuai',
+            ]);
         }
-
-        return back()->withErrors([
-            'email' => 'Email tidak sesuai',
-            'password' => 'password tidak sesuai',
-        ]);
     }
 
     public function tampilandaftar()
     {
         return view('auth.daftar');
     }
-    
+
     public function daftar(Request $request)
     {
         $validator = Validator::make($request->all(), [
